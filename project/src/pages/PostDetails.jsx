@@ -7,7 +7,7 @@ const PostDetails = () => {
   const { image, description } = location.state || {};
 
   return (
-    <div>
+    <div className="">
       <div className="bg-white shadow-md rounded-lg overflow-hidden">
         {image && <img src={image} alt="Post" className="w-full h-64 object-cover object-center" />}
         <div className="container mx-auto px-4 py-8">
