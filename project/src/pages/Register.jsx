@@ -17,13 +17,9 @@ const Register = () => {
   };
 
   return (
-    <div className=" my-10 flex flex-col md:flex-row mx-auto justify-evenly min-h-[80vh] w-full md:w-4/5 p-4 md:p-0">
+    <div className=" my-10 flex flex-col md:flex-row mx-auto min-h-[80vh] w-full md:w-4/5 p-4 md:p-0">
       <div className="w-full md:w-1/2 flex justify-center items-center mb-8 md:mb-0  ">
-        <img
-          src="istockphoto-1223604108-612x612.jpg"
-          alt="register Image"
-          className="max-w-full h-auto rounded-lg shadow-lg"
-        />
+        <img src="authForm2.jpg" alt="register Image" className="max-w-full h-auto " />
       </div>
       <div className="w-full md:w-1/2 flex flex-col items-center justify-center">
         <div className="w-full max-w-md bg-slate-500 border border-[oklch(0.4_0.1_272.54)] flex flex-col items-center justify-center  p-6 md:p-10 rounded-xl shadow-lg ">
