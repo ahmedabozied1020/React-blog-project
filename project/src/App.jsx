@@ -6,6 +6,7 @@ import LogIn from "./pages/LogIn";
 import Register from "./pages/Register";
 import PostDetails from "./pages/postDetails";
 import CrudPost from "./pages/CrudPost";
+
 const App = () => {
   return (
     <BrowserRouter>
@@ -14,8 +15,8 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<LogIn />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/postdetails/:id" element={<PostDetails />} />
         <Route path="/modify" element={<CrudPost />} />
+        <Route path="/postdetails/:id" element={<PostDetails />} />
       </Routes>
     </BrowserRouter>
   );
