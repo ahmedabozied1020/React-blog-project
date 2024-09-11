@@ -1,19 +1,37 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import axios from "axios";
 
 const LogIn = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm();
 
   const navigate = useNavigate();
 
-  const onSubmit = (data) => {
-    console.log("User Data:", data);
-    navigate("/");
+  const onSubmit = async (data) => {
+    try {
+      const response = await axios.post("http://localhost:3000/login", data);
+      if (response.data.token) {
+        localStorage.setItem("token", response.data.token);
+
+        navigate("/");
+      } else {
+        setError("submitError", {
+          type: "manual",
+          message: "Login failed. Please check your credentials.",
+        });
+      }
+    } catch (error) {
+      setError("submitError", {
+        type: "manual",
+        message: error.response?.data?.message || "An error occurred during login.",
+      });
+    }
   };
 
   return (
@@ -80,6 +98,9 @@ const LogIn = () => {
                 <p className="text-red-700 text-sm font-bold mt-1">{errors.password.message}</p>
               )}
             </div>
+            {errors.submitError && (
+              <p className="text-red-700 text-sm font-bold mt-1">{errors.submitError.message}</p>
+            )}
 
             <span className="capitalize text-sm font-bold text-zinc-300 ">
               I don't have account{" "}

@@ -3,25 +3,25 @@ import axios from "axios";
 import { useState } from "react";
 
 const UseGetPost = () => {
-  const [posts, setPosts] = useState([]);
+  const [helloMessage, setHelloMessage] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchPosts = async () => {
+    const fetchHello = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/posts");
-        setPosts(response.data);
+        const response = await axios.get("http://localhost:3000/api/hello");
+        setHelloMessage(response.data.message);
         setLoading(false);
       } catch (err) {
         setError("404 Not Found , Failed to get posts");
         setLoading(false);
       }
     };
-    fetchPosts();
+    fetchHello();
   }, []);
   return {
-    posts,
+    helloMessage,
     loading,
     error,
   };

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 
 const PostDetails = () => {
   const { id } = useParams();
@@ -44,7 +44,8 @@ const PostDetails = () => {
           {showButtons && (
             <div className="absolute top-full left-0 mt-2 shadow-lg flex flex-col">
               <button className="flex items-center justify-evenly bg-green-600 text-base-100 p-1 w-20 hover:bg-green-700 hover:text-white">
-                Add
+                <Link to="/addPost"> Add </Link>
+
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"

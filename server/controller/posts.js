@@ -1,5 +1,6 @@
 const fs = require("fs/promises");
 const path = require("path");
+const multer = require("multer");
 const dataFilePath = path.join(__dirname, "../data.json");
 
 exports.getPosts = async (req, res) => {
@@ -17,12 +18,38 @@ exports.getPosts = async (req, res) => {
   }
 };
 
-exports.postPosts = async (req, res) => {
-  const post = req.body;
-  const posts = JSON.parse(await fs.readFile("data.json"));
-  posts.push(post);
-  res.send("post added");
-};
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/");
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    const extension = path.extname(file.originalname);
+    cb(null, file.fieldname + "-" + uniqueSuffix + extension);
+  },
+});
+
+const upload = multer({ storage: storage });
+
+exports.postPosts = [
+  upload.single("image"),
+  async (req, res) => {
+    try {
+      const post = req.body;
+      console.log("Received body:", post);
+      if (req.file) {
+        post.image = `/uploads/${req.file.filename}`;
+      }
+      const posts = JSON.parse(await fs.readFile("data.json"));
+      posts.push(post);
+      await fs.writeFile("data.json", JSON.stringify(posts));
+      res.send("post added");
+    } catch (error) {
+      console.error("Error:", error);
+      res.status(400).send("Error adding post: " + error.message);
+    }
+  },
+];
 
 exports.patchPosts = async (req, res) => {
   try {

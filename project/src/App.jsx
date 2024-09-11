@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import LogIn from "./pages/LogIn";
 import Register from "./pages/Register";
 import PostDetails from "./pages/postDetails";
+import AddPost from "./component/addPost";
 const App = () => {
   return (
     <BrowserRouter>
@@ -14,6 +15,7 @@ const App = () => {
         <Route path="/login" element={<LogIn />} />
         <Route path="/register" element={<Register />} />
         <Route path="/postdetails/:id" element={<PostDetails />} />
+        <Route path="/addPost" element={<AddPost />} />
       </Routes>
     </BrowserRouter>
   );
