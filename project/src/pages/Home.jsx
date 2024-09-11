@@ -1,132 +1,40 @@
-import React from "react";
-// import { Link } from "react-router-dom";
-import UseGetPost from "../../Hooks/useGetPost";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 const Home = () => {
-  const { helloMessage, error, loading } = UseGetPost();
+  const [posts, setPosts] = useState([]);
+  useEffect(() => {
+    fetchAllPosts();
+  }, []);
 
-  if (loading)
-    return (
-      <div className="w-full h-screen flex justify-center items-center">
-        <span className="loading loading-spinner loading-lg"></span>
-      </div>
-    );
-  if (error)
-    return (
-      <div
-        role="alert"
-        className="alert alert-error mt-10 flex justify-center items-center w-1/2 mx-auto"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-6 w-6 shrink-0 stroke-current"
-          fill="none"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-          />
-        </svg>
-        <span className="text-xl">{error}</span>
-      </div>
-    );
+  const fetchAllPosts = async () => {
+    try {
+      const response = await axios.get("http://localhost:3000/posts/all");
+      setPosts(response.data);
+    } catch (error) {
+      console.error("Error fetching all posts:", error);
+    }
+  };
 
   return (
-    <div className="m-10 rounded-2xl">
-      <h1 className="text-2xl font-bold mb-4">Home Page</h1>
-      <p className="text-xl">{helloMessage}</p>
+    <div className="w-4/5 mx-auto flex flex-col items-center">
+      <h1 className="text-2xl font-bold my-6">All Posts</h1>
+      <div className="w-full max-w-2xl space-y-4">
+        {posts.map((post) => (
+          <div key={post._id} className="bg-white p-4 rounded-xl shadow">
+            <h2 className="text-xl font-bold">{post.title}</h2>
+            <p>{post.description}</p>
+            {post.image && (
+              <img
+                src={`http://localhost:3000/${post.image}`}
+                alt="Post"
+                className="mt-2 max-w-full h-auto rounded"
+              />
+            )}
+          </div>
+        ))}
+      </div>
     </div>
-
-    // <div className="m-10 rounded-2xl">
-    //   <h1 className="text-2xl font-bold mb-4">Home Page</h1>
-    //   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-4/5 mx-auto mt-10">
-    //     {posts.map((post) => (
-    //       <div key={post.id} className="border rounded-md flex flex-col h-full">
-    //         <div className="overflow-hidden h-48">
-    //           <img
-    //             className="w-full h-full object-cover transition-transform duration-300 ease-in-out transform hover:scale-105"
-    //             src={post.image}
-    //             alt="imagePost"
-    //           />
-    //         </div>
-    //         <div className="p-4 flex-grow flex flex-col">
-    //           <h2 className="text-xl font-semibold mb-2 line-clamp-2">{post.title}</h2>
-    //           <p className="mb-4 flex-grow line-clamp-3">{post.body}</p>
-    //           <div className="flex items-center space-x-4 mb-4">
-    //             <svg
-    //               xmlns="http://www.w3.org/2000/svg"
-    //               fill="none"
-    //               viewBox="0 0 24 24"
-    //               strokeWidth={1.5}
-    //               stroke="currentColor"
-    //               className="w-6 h-6 text-gray-500 hover:text-blue-500 transition-all duration-500 ease-in-out transform hover:scale-110 hover:animate-pulse"
-    //             >
-    //               <path
-    //                 strokeLinecap="round"
-    //                 strokeLinejoin="round"
-    //                 d="M6.633 10.25c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75a.75.75 0 0 1 .75-.75 2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282m0 0h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23H5.904m10.598-9.75H14.25M5.904 18.5c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 0 1-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 9.953 4.167 9.5 5 9.5h1.053c.472 0 .745.556.5.96a8.958 8.958 0 0 0-1.302 4.665c0 1.194.232 2.333.654 3.375Z"
-    //               />
-    //             </svg>
-    //             <svg
-    //               xmlns="http://www.w3.org/2000/svg"
-    //               fill="none"
-    //               viewBox="0 0 24 24"
-    //               strokeWidth={1.5}
-    //               stroke="currentColor"
-    //               className="w-6 h-6 text-gray-500 hover:text-red-500 transition-transform duration-300 ease-in-out transform hover:animate-bounce"
-    //             >
-    //               <path
-    //                 strokeLinecap="round"
-    //                 strokeLinejoin="round"
-    //                 d="M7.498 15.25H4.372c-1.026 0-1.945-.694-2.054-1.715a12.137 12.137 0 0 1-.068-1.285c0-2.848.992-5.464 2.649-7.521C5.287 4.247 5.886 4 6.504 4h4.016a4.5 4.5 0 0 1 1.423.23l3.114 1.04a4.5 4.5 0 0 0 1.423.23h1.294M7.498 15.25c.618 0 .991.724.725 1.282A7.471 7.471 0 0 0 7.5 19.75 2.25 2.25 0 0 0 9.75 22a.75.75 0 0 0 .75-.75v-.633c0-.573.11-1.14.322-1.672.304-.76.93-1.33 1.653-1.715a9.04 9.04 0 0 0 2.86-2.4c.498-.634 1.226-1.08 2.032-1.08h.384m-10.253 1.5H9.7m8.075-9.75c.01.05.027.1.05.148.593 1.2.925 2.55.925 3.977 0 1.487-.36 2.89-.999 4.125m.023-8.25c-.076-.365.183-.75.575-.75h.908c.889 0 1.713.518 1.972 1.368.339 1.11.521 2.287.521 3.507 0 1.553-.295 3.036-.831 4.398-.306.774-1.086 1.227-1.918 1.227h-1.053c-.472 0-.745-.556-.5-.96a8.95 8.95 0 0 0 .303-.54"
-    //               />
-    //             </svg>
-    //             <svg
-    //               xmlns="http://www.w3.org/2000/svg"
-    //               fill="none"
-    //               viewBox="0 0 24 24"
-    //               strokeWidth={1.5}
-    //               stroke="currentColor"
-    //               className="w-6 h-6 transition-transform duration-500 ease-in-out hover:rotate-45"
-    //             >
-    //               <path
-    //                 strokeLinecap="round"
-    //                 strokeLinejoin="round"
-    //                 d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z"
-    //               />
-    //             </svg>
-    //           </div>
-    //           <div className="flex justify-end">
-    //             <Link
-    //               to={`/postdetails/${post.id}`}
-    //               state={{ image: `/${post.image}`, description: post.body, id: post.id }}
-    //             >
-    //               <button
-    //                 type="submit"
-    //                 className="h-10 flex justify-center gap-2 items-center shadow-xl text-base bg-gray-50 backdrop-blur-md lg:font-semibold isolation-auto border-gray-50 before:absolute before:w-full before:transition-all before:duration-700 before:hover:w-full before:-left-full before:hover:left-0 before:rounded-full before:bg-slate-700 hover:text-gray-50 before:-z-10 before:aspect-square before:hover:scale-150 before:hover:duration-700 relative z-10 px-4 py-2 overflow-hidden border-2 rounded-lg group"
-    //               >
-    //                 Explore
-    //                 <svg
-    //                   className="w-7 h-7 justify-end group-hover:rotate-90 group-hover:bg-gray-50 text-gray-50 ease-linear duration-300 rounded-full border border-gray-700 group-hover:border-none p-2 rotate-45"
-    //                   viewBox="0 0 16 19"
-    //                   xmlns="http://www.w3.org/2000/svg"
-    //                 >
-    //                   <path
-    //                     d="M7 18C7 18.5523 7.44772 19 8 19C8.55228 19 9 18.5523 9 18H7ZM8.70711 0.292893C8.31658 -0.0976311 7.68342 -0.0976311 7.29289 0.292893L0.928932 6.65685C0.538408 7.04738 0.538408 7.68054 0.928932 8.07107C1.31946 8.46159 1.95262 8.46159 2.34315 8.07107L8 2.41421L13.6569 8.07107C14.0474 8.46159 14.6805 8.46159 15.0711 8.07107C15.4616 7.68054 15.4616 7.04738 15.0711 6.65685L8.70711 0.292893ZM9 18L9 1H7L7 18H9Z"
-    //                     className="fill-gray-800 group-hover:fill-gray-800"
-    //                   ></path>
-    //                 </svg>
-    //               </button>
-    //             </Link>
-    //           </div>
-    //         </div>
-    //       </div>
-    //     ))}
-    //   </div>
-    // </div>
   );
 };
 

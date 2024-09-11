@@ -12,6 +12,11 @@ const NavBar = () => {
       <div className="flex-none">
         <ul className="menu menu-horizontal px-1 ">
           <li>
+            <Link className="focus:text-base-100 focus:bg-slate-500" to="/modify">
+              Modify
+            </Link>
+          </li>
+          <li>
             <Link className="focus:text-base-100 focus:bg-slate-500" to="/register">
               SignUp
             </Link>

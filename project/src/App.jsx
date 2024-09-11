@@ -5,7 +5,7 @@ import Home from "./pages/Home";
 import LogIn from "./pages/LogIn";
 import Register from "./pages/Register";
 import PostDetails from "./pages/postDetails";
-import AddPost from "./component/addPost";
+import CrudPost from "./pages/CrudPost";
 const App = () => {
   return (
     <BrowserRouter>
@@ -15,7 +15,7 @@ const App = () => {
         <Route path="/login" element={<LogIn />} />
         <Route path="/register" element={<Register />} />
         <Route path="/postdetails/:id" element={<PostDetails />} />
-        <Route path="/addPost" element={<AddPost />} />
+        <Route path="/modify" element={<CrudPost />} />
       </Routes>
     </BrowserRouter>
   );

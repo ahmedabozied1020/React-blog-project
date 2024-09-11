@@ -1,83 +1,93 @@
-const fs = require("fs/promises");
-const path = require("path");
-const multer = require("multer");
-const dataFilePath = path.join(__dirname, "../data.json");
+const Post = require("../models/posts");
+const Jwt = require("jsonwebtoken");
+const util = require("util");
+require("dotenv").config();
 
 exports.getPosts = async (req, res) => {
   try {
-    const data = await fs.readFile(dataFilePath, "utf-8");
-    const posts = JSON.parse(data);
-    res.json(posts);
+    console.log("User ID from token:", req.user._id);
+    const posts = await Post.find({ userId: req.user._id });
+    console.log("Found posts:", posts);
+    res.send(posts);
   } catch (error) {
-    if (error.code === "ENOENT") {
-      res.json([]);
-    } else {
-      console.error(error);
-      res.status(500).send("An error occurred while fetching posts.");
-    }
+    console.error("Error in getPosts:", error);
+    res.status(500).send({ error: error.message });
   }
 };
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/");
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    const extension = path.extname(file.originalname);
-    cb(null, file.fieldname + "-" + uniqueSuffix + extension);
-  },
-});
+exports.getAllPosts = async (req, res) => {
+  try {
+    const posts = await Post.find(); 
+    res.send(posts);
+  } catch (error) {
+    console.error("Error fetching all posts:", error);
+    res.status(500).send({ error: error.message });
+  }
+};
 
-const upload = multer({ storage: storage });
+exports.createPost = async (req, res, next) => {
+  try {
+    const body = req.body;
+    const imagePath = req.file ? req.file.path.replace(/\\/g, "/") : undefined;
+    const post = await Post.create({
+      ...body,
+      userId: req.user._id,
+      image: imagePath,
+    });
+    await post.save();
+    res.status(201).send({ message: "post added", post });
+  } catch (err) {
+    console.error("Error in createPost:", err);
+    next(err);
+  }
+};
 
-exports.postPosts = [
-  upload.single("image"),
-  async (req, res) => {
-    try {
-      const post = req.body;
-      console.log("Received body:", post);
-      if (req.file) {
-        post.image = `/uploads/${req.file.filename}`;
-      }
-      const posts = JSON.parse(await fs.readFile("data.json"));
-      posts.push(post);
-      await fs.writeFile("data.json", JSON.stringify(posts));
-      res.send("post added");
-    } catch (error) {
-      console.error("Error:", error);
-      res.status(400).send("Error adding post: " + error.message);
-    }
-  },
-];
-
-exports.patchPosts = async (req, res) => {
+exports.updatePost = async (req, res, next) => {
   try {
     const { id } = req.params;
     const updatedPost = req.body;
-    const posts = JSON.parse(await fs.readFile("data.json"));
-    let postFound = false;
-    for (let i = 0; i < posts.length; i++) {
-      if (posts[i].id === id) {
-        posts[i] = { ...posts[i], ...updatedPost };
-        postFound = true;
-        break;
-      }
+
+    if (req.file) {
+      updatedPost.image = req.file.path.replace(/\\/g, "/");
     }
-    if (!postFound) {
-      return res.status(404).send("post Not Found");
+
+    const post = await Post.findOneAndUpdate({ _id: id, userId: req.user._id }, updatedPost, {
+      new: true,
+    });
+
+    if (!post) {
+      return res
+        .status(404)
+        .send({ message: "Post not found or you're not authorized to update it" });
     }
-    await fs.writeFile("./data.json", JSON.stringify(posts));
-    res.send("posts updated");
-  } catch (error) {
-    console.log(error);
+
+    res.send(post);
+  } catch (err) {
+    console.error("Error in updatePost:", err);
+    next(err);
   }
 };
 
-exports.deletePosts = async (req, res) => {
-  const { id } = req.params;
-  const posts = JSON.parse(await fs.readFile("data.json"));
-  const updatedPosts = posts.filter((post) => post.id !== id);
-  await fs.writeFile("data.json", JSON.stringify(updatedPosts));
-  res.send("post deleted");
+exports.deletePost = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    await Post.findOneAndDelete({ _id: id, userId: req.user._id });
+    res.send("post deleted");
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getPost = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const post = await Post.findById(id);
+    if (req.user._id.toString() === post.userId.toString()) {
+      res.send(post);
+    } else {
+      res.status(403).send({ message: "forbidden" });
+    }
+  } catch (err) {
+    next(err);
+  }
 };
