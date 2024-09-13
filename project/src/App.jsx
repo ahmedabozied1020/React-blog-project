@@ -6,6 +6,7 @@ import LogIn from "./pages/LogIn";
 import Register from "./pages/Register";
 import PostDetails from "./pages/postDetails";
 import CrudPost from "./pages/CrudPost";
+import Footer from "./component/footer";
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
         <Route path="/modify" element={<CrudPost />} />
         <Route path="/postdetails/:id" element={<PostDetails />} />
       </Routes>
+      <Footer />
     </BrowserRouter>
   );
 };

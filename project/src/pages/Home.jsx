@@ -18,10 +18,34 @@ const Home = () => {
   };
 
   return (
-    <div className="w-[40%] max-w-3xl mx-auto py-10 px-4">
-      <div className="space-y-8">
+    <div className=" mx-auto py-10 px-4 flex ">
+      <div className=" w-1/5 h-full flex">
+        <div className="w-4/5">
+          <span className="text-xl flex px-3 py-3 gap-4 ">
+            <img src="support_4116211.png" alt="friends" className="w-7 h-7" />
+            Friends
+          </span>
+          <span className="text-xl flex px-3 py-2 gap-4 ">
+            <img src="watching_11919629.png" alt="watches" className="w-7 h-7" />
+            Watches
+          </span>
+          <span className="text-xl flex px-3 py-2 gap-4 ">
+            <img src="briefcase_7771335.png" alt="business" className="w-7 h-7" />
+            Business
+          </span>
+          <span className="text-xl flex px-3 py-2 gap-4 ">
+            <img src="marketplace_13887514.png" alt="Marketplace" className="w-7 h-7" />
+            MarketPlace
+          </span>
+          <span className="text-xl flex px-3 py-2 gap-4 ">
+            <img src="newspaper_5766922.png" alt="news" className="w-7 h-7" />
+            News
+          </span>
+        </div>
+      </div>
+      <div className="space-y-8 w-[55%]">
         {posts.map((post) => (
-          <div key={post._id} className="bg-white rounded-xl shadow-lg overflow-hidden">
+          <div key={post._id} className="bg-white rounded-xl shadow-2xl overflow-hidden">
             {post.image && (
               <div className="relative h-80 overflow-hidden">
                 <img
@@ -96,10 +120,10 @@ const Home = () => {
                 <Link
                   to={`/postdetails/${post._id}`}
                   state={{ post: post }}
-                  className="inline-flex items-center gap-2 bg-[#7808d0] text-white font-semibold py-2 px-4 rounded-full"
+                  className="inline-flex items-center gap-2 bg-slate-700 text-white font-semibold py-2 px-4 rounded-full transform transition-transform duration-300 hover:scale-105 hover:shadow-lg"
                 >
                   <span>Explore</span>
-                  <span className="relative flex-shrink-0 w-5 h-5 bg-white text-[#7808d0] rounded-full grid place-items-center overflow-hidden">
+                  <span className="relative flex-shrink-0 w-5 h-5 bg-white text-gray-400 rounded-full grid place-items-center overflow-hidden transform transition-transform duration-300 hover:rotate-45">
                     <svg
                       viewBox="0 0 14 15"
                       fill="none"
