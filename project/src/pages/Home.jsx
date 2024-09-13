@@ -18,36 +18,40 @@ const Home = () => {
   };
 
   return (
-    <div className=" mx-auto py-10 px-4 flex ">
+    <div className=" mx-auto py-10 px-6 flex gap-10 ">
       <div className=" w-1/5 h-full flex">
         <div className="w-4/5">
-          <span className="text-xl flex px-3 py-3 gap-4 ">
+          <span className="text-xl flex px-3 py-3 gap-4 hover:bg-slate-300 rounded-2xl hover:cursor-pointer">
             <img src="support_4116211.png" alt="friends" className="w-7 h-7" />
             Friends
           </span>
-          <span className="text-xl flex px-3 py-2 gap-4 ">
+          <span className="text-xl flex px-3 py-2 gap-4 hover:bg-slate-300 rounded-2xl hover:cursor-pointer ">
             <img src="watching_11919629.png" alt="watches" className="w-7 h-7" />
             Watches
           </span>
-          <span className="text-xl flex px-3 py-2 gap-4 ">
+          <span className="text-xl flex px-3 py-2 gap-4 hover:bg-slate-300 rounded-2xl hover:cursor-pointer ">
             <img src="briefcase_7771335.png" alt="business" className="w-7 h-7" />
             Business
           </span>
-          <span className="text-xl flex px-3 py-2 gap-4 ">
+          <span className="text-xl flex px-3 py-2 gap-4 hover:bg-slate-300 rounded-2xl hover:cursor-pointer ">
             <img src="marketplace_13887514.png" alt="Marketplace" className="w-7 h-7" />
             MarketPlace
           </span>
-          <span className="text-xl flex px-3 py-2 gap-4 ">
+          <span className="text-xl flex px-3 py-2 gap-4 hover:bg-slate-300 rounded-2xl hover:cursor-pointer ">
             <img src="newspaper_5766922.png" alt="news" className="w-7 h-7" />
             News
           </span>
         </div>
       </div>
-      <div className="space-y-8 w-[55%]">
+      <div className="space-y-8 w-[45%]">
         {posts.map((post) => (
           <div key={post._id} className="bg-white rounded-xl shadow-2xl overflow-hidden">
+            <div className="p-6">
+              <h2 className="text-2xl font-bold mb-3">{post.title}</h2>
+              <p className="text-gray-600 mb-4">{post.description}</p>
+            </div>
             {post.image && (
-              <div className="relative h-80 overflow-hidden">
+              <div className="relative h-96 overflow-hidden">
                 <img
                   src={`http://localhost:3000/${post.image}`}
                   alt="Post"
@@ -56,8 +60,6 @@ const Home = () => {
               </div>
             )}
             <div className="p-6">
-              <h2 className="text-2xl font-bold mb-3">{post.title}</h2>
-              <p className="text-gray-600 mb-4">{post.description}</p>
               <div className="flex justify-between items-center">
                 <div className="flex space-x-4">
                   <svg
