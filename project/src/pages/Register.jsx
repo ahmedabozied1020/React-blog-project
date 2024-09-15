@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-
+import { useAuth } from "../../Hooks/AuthContext";
 const Register = () => {
   const {
     register,
@@ -11,11 +11,12 @@ const Register = () => {
   } = useForm();
 
   const navigate = useNavigate();
+  const { signup } = useAuth();
 
   const onSubmit = async (data) => {
     try {
-      const { email, password } = data;
-      const response = await axios.post("http://localhost:3000/signup", { email, password });
+      const { name, email, password } = data;
+      const response = await axios.post("http://localhost:3000/signup", { name, email, password });
       console.log("User registered:", response.data);
       navigate("/login");
     } catch (error) {
@@ -40,6 +41,22 @@ const Register = () => {
             onSubmit={handleSubmit(onSubmit)}
             className="w-full flex flex-col items-center gap-5"
           >
+            <div className="w-full">
+              <label className="w-full input input-bordered flex items-center gap-2 bg-white">
+                <span className="text-gray-700">Name</span>
+                <input
+                  type="text"
+                  className="grow"
+                  placeholder="Please enter your Name"
+                  {...register("name", {
+                    required: "Name is required",
+                  })}
+                />
+              </label>
+              {errors.name && (
+                <p className="text-red-700 text-sm font-bold mt-1">{errors.name.message}</p>
+              )}
+            </div>
             <div className="w-full">
               <label className="w-full input input-bordered flex items-center gap-2 bg-white">
                 <span className="text-gray-700">Email</span>

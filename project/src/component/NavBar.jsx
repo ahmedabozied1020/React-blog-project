@@ -1,7 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
+import { useAuth } from "../../Hooks/AuthContext";
 const NavBar = () => {
+  const { user, logout } = useAuth();
+
   return (
     <div className="navbar bg-slate-700 text-base-100">
       <div className="flex-1">
@@ -87,22 +89,37 @@ const NavBar = () => {
           />
         </svg>
 
-        <ul className="menu menu-horizontal px-1 ">
+        <ul className="menu menu-horizontal px-1">
           <li>
             <Link className="focus:text-base-100 focus:bg-slate-500" to="/modify">
               Modify
             </Link>
           </li>
-          <li>
-            <Link className="focus:text-base-100 focus:bg-slate-500" to="/register">
-              SignUp
-            </Link>
-          </li>
-          <li>
-            <Link className="focus:text-base-100 focus:bg-slate-500" to="/login">
-              LogIn
-            </Link>
-          </li>
+          {user ? (
+            <>
+              <li>
+                <span className="focus:text-base-100 focus:bg-slate-500">{user.name}</span>
+              </li>
+              <li>
+                <button className="focus:text-base-100 focus:bg-slate-500" onClick={logout}>
+                  Logout
+                </button>
+              </li>
+            </>
+          ) : (
+            <>
+              <li>
+                <Link className="focus:text-base-100 focus:bg-slate-500" to="/register">
+                  SignUp
+                </Link>
+              </li>
+              <li>
+                <Link className="focus:text-base-100 focus:bg-slate-500" to="/login">
+                  LogIn
+                </Link>
+              </li>
+            </>
+          )}
         </ul>
       </div>
     </div>

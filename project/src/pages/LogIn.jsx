@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-
+import { useAuth } from "../../Hooks/AuthContext";
 const LogIn = () => {
   const {
     register,
@@ -12,13 +12,13 @@ const LogIn = () => {
   } = useForm();
 
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const onSubmit = async (data) => {
     try {
       const response = await axios.post("http://localhost:3000/login", data);
       if (response.data.token) {
-        localStorage.setItem("token", response.data.token);
-
+        login({ token: response.data.token, name: response.data.name });
         navigate("/");
       } else {
         setError("submitError", {
