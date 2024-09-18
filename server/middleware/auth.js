@@ -12,7 +12,6 @@ module.exports = async (req, res, next) => {
       return res.status(401).send("No token provided");
     }
 
-    // Remove 'Bearer ' if it's included in the token
     const tokenString = token.startsWith("Bearer ") ? token.slice(7) : token;
 
     const payload = await jwtVerify(tokenString, process.env.JWT_SECRET);
