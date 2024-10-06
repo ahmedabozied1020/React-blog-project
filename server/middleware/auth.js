@@ -1,12 +1,6 @@
-const User = require("../models/users");
-const Jwt = require("jsonwebtoken");
-const util = require("util");
-
-const jwtVerify = util.promisify(Jwt.verify);
-
 module.exports = async (req, res, next) => {
   try {
-    const token = req.headers.authorization;
+    const token = req.headers.authorization || req.query.token;
 
     if (!token) {
       return res.status(401).send("No token provided");
@@ -15,9 +9,9 @@ module.exports = async (req, res, next) => {
     const tokenString = token.startsWith("Bearer ") ? token.slice(7) : token;
 
     const payload = await jwtVerify(tokenString, process.env.JWT_SECRET);
-    console.log("Token payload:", payload);
+    console.log("Decoded token in auth middleware:", payload);
 
-    if (!payload.userId) {
+    if (!payload.userId || !payload.name) {
       return res.status(401).send("Invalid token payload");
     }
 
@@ -29,6 +23,7 @@ module.exports = async (req, res, next) => {
     }
 
     req.user = user;
+    req.token = tokenString;
     next();
   } catch (err) {
     console.error("Auth middleware error:", err);

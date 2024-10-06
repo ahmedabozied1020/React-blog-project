@@ -35,14 +35,17 @@ exports.logIn = async (req, res, next) => {
     if (!user) return res.send("EMAIL OR PASSWORD IS INVALID");
     const isMatched = await bcrypt.compare(password, user.password);
     if (isMatched) {
-      const token = await jwtSign({ userId: user._id }, process.env.JWT_SECRET, {
+      const tokenPayload = { userId: user._id.toString(), name: user.name };
+      const token = await jwtSign(tokenPayload, process.env.JWT_SECRET, {
         expiresIn: "3d",
       });
-      res.status(200).json({ message: "User logged in", token, name: user.name });
+      console.log("Token payload:", tokenPayload);
+      res.status(200).json({ message: "User logged in", token, userId: user._id.toString(), name: user.name });
     } else {
       res.status(400).send("EMAIL OR PASSWORD IS INVALID");
     }
   } catch (err) {
+    console.error("Login error:", err);
     next(err);
   }
 };
