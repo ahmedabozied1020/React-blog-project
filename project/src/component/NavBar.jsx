@@ -7,7 +7,7 @@ const NavBar = () => {
   return (
     <div className="navbar bg-slate-700 text-base-100">
       <div className="flex-1">
-        <Link to="/" className="btn btn-ghost text-xl font-mono uppercase tracking-widest	">
+        <Link to="/home" className="btn btn-ghost text-xl font-mono uppercase tracking-widest	">
           blog
         </Link>
         <form className=" w-[30%] mx-auto">
@@ -71,16 +71,18 @@ const NavBar = () => {
                 <span className="focus:text-base-100 focus:bg-slate-500">{user.name}</span>
               </li>
               <li>
-                <button className="focus:text-base-100 focus:bg-slate-500" onClick={logout}>
-                  Logout
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9"
-                    />
-                  </svg>
-                </button>
+                <Link to="/">
+                  <button className="focus:text-base-100 focus:bg-slate-500 flex gap-1" onClick={logout}>
+                    Logout
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9"
+                      />
+                    </svg>
+                  </button>
+                </Link>
               </li>
             </>
           ) : (

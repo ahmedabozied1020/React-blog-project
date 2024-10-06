@@ -19,7 +19,7 @@ const LogIn = () => {
       const response = await axios.post("http://localhost:3000/login", data);
       if (response.data.token) {
         login({ token: response.data.token, name: response.data.name });
-        navigate("/");
+        navigate("/home");
       } else {
         setError("submitError", {
           type: "manual",
@@ -36,7 +36,7 @@ const LogIn = () => {
   };
 
   return (
-    <div className=" my-10 flex flex-col md:flex-row mx-auto justify-evenly min-h-[80vh] w-full md:w-4/5 p-4 md:p-0">
+    <div className="flex flex-col md:flex-row mx-auto justify-evenly min-h-screen w-full md:w-4/5  md:p-0">
       <div className="w-full md:w-1/2 flex justify-center items-center mb-8 md:mb-0  ">
         <img src="authForm.jpg" alt="register Image" className="max-w-full h-auto shadow-transparent rounded-xl " />
       </div>
