@@ -8,6 +8,7 @@ import PostDetails from "./pages/postDetails";
 import CrudPost from "./pages/CrudPost";
 import Footer from "./component/footer";
 import { AuthProvider } from "../Hooks/AuthContext";
+import Chat from "./pages/Chat";
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
               <Route path="/register" element={<Register />} />
               <Route path="/modify" element={<CrudPost />} />
               <Route path="/postdetails/:id" element={<PostDetails />} />
+              <Route path="/chat" element={<Chat />} />
             </Routes>
           </main>
           <Footer />
