@@ -4,6 +4,8 @@ const cors = require("cors");
 const http = require("http");
 const { Server: socketServer } = require("socket.io");
 const jwt = require("jsonwebtoken");
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" });
 
 // routers
 const postsRoute = require("./routers/posts");

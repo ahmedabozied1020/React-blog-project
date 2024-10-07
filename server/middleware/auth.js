@@ -1,3 +1,9 @@
+const jwt = require("jsonwebtoken");
+const { promisify } = require("util");
+const User = require("../models/users");
+
+const jwtVerify = promisify(jwt.verify);
+
 module.exports = async (req, res, next) => {
   try {
     const token = req.headers.authorization || req.query.token;
