@@ -5,10 +5,10 @@ import Home from "./pages/Home";
 import LogIn from "./pages/LogIn";
 import Register from "./pages/Register";
 import PostDetails from "./pages/postDetails";
-import CrudPost from "./pages/CrudPost";
 import Footer from "./component/footer";
 import { AuthProvider, useAuth } from "../Hooks/AuthContext";
 import Chat from "./pages/Chat";
+import UserProfile from "./pages/UserProfile";
 
 const Layout = ({ children }) => (
   <div className="flex flex-col min-h-screen">
@@ -56,14 +56,6 @@ const App = () => {
               }
             />
             <Route
-              path="/modify"
-              element={
-                <Layout>
-                  <CrudPost />
-                </Layout>
-              }
-            />
-            <Route
               path="/postdetails/:id"
               element={
                 <Layout>
@@ -80,6 +72,14 @@ const App = () => {
               }
             />
           </Route>
+          <Route
+            path="/userprofile"
+            element={
+              <Layout>
+                <UserProfile />
+              </Layout>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

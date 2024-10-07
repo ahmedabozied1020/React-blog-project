@@ -1,29 +1,48 @@
-import React from "react";
+import { React, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import { useAuth } from "../../Hooks/AuthContext";
+
 const Register = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm();
 
+  const [avatarFile, setAvatarFile] = useState(null);
   const navigate = useNavigate();
-  const { signup } = useAuth();
 
   const onSubmit = async (data) => {
     try {
-      const { name, email, password } = data;
-      const response = await axios.post("http://localhost:3000/signup", { name, email, password });
+      const formData = new FormData();
+      formData.append("name", data.name);
+      formData.append("email", data.email);
+      formData.append("password", data.password);
+      if (avatarFile) {
+        formData.append("avatar", avatarFile);
+      }
+      const response = await axios.post("http://localhost:3000/signup", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
       console.log("User registered:", response.data);
-      navigate("/login");
+      if (response.data.user) {
+        navigate("/login");
+      }
     } catch (error) {
       console.error("Registration error:", error.response?.data || error.message);
+      setError("submitError", {
+        type: "manual",
+        message: error.response?.data?.message || "An error occurred during registration.",
+      });
     }
   };
-
+  const handleAvatarChange = (e) => {
+    setAvatarFile(e.target.files[0]);
+  };
   return (
     <div className="flex flex-col md:flex-row mx-auto min-h-screen w-full md:w-4/5 p-4 md:p-0">
       <div className="w-full md:w-1/2 flex justify-center items-center mb-8 md:mb-0  ">
@@ -88,6 +107,12 @@ const Register = () => {
                 />
               </label>
               {errors.password && <p className="text-red-700 text-sm font-bold mt-1">{errors.password.message}</p>}
+            </div>
+            <div className="w-full">
+              <label className="w-full input input-bordered flex items-center gap-2 bg-white">
+                <span className="text-gray-700">Avatar</span>
+                <input type="file" accept="image/*" onChange={handleAvatarChange} />
+              </label>
             </div>
 
             <span className="capitalize text-sm font-bold text-zinc-300 ">

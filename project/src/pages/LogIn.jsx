@@ -18,7 +18,7 @@ const LogIn = () => {
     try {
       const response = await axios.post("http://localhost:3000/login", data);
       if (response.data.token) {
-        login({ token: response.data.token, name: response.data.name });
+        login({ token: response.data.token, name: response.data.name, avatar: response.data.avatar });
         navigate("/home");
       } else {
         setError("submitError", {

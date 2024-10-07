@@ -59,17 +59,17 @@ const NavBar = () => {
             />
           </svg>
         </Link>
-        <ul className="menu menu-horizontal px-1">
-          <li>
-            <Link className="focus:text-base-100 focus:bg-slate-500" to="/modify">
-              Modify
-            </Link>
-          </li>
+        <ul className="menu menu-horizontal px-1 flex items-center">
           {user ? (
             <>
-              <li>
-                <span className="focus:text-base-100 focus:bg-slate-500">{user.name}</span>
-              </li>
+              <Link to="/userprofile">
+                <li>
+                  <div className="flex items-center gap-2">
+                    {user && user.avatar && <img src={user.avatar} alt={`${user.name}'s avatar`} className="w-8 h-8 rounded-full" />}{" "}
+                    <span className="focus:text-base-100 focus:bg-slate-500">{user.name}</span>
+                  </div>
+                </li>
+              </Link>
               <li>
                 <Link to="/">
                   <button className="focus:text-base-100 focus:bg-slate-500 flex gap-1" onClick={logout}>
