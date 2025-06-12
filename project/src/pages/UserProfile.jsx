@@ -82,11 +82,39 @@ const UserProfile = () => {
           <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} className="input input-bordered w-full" placeholder="Title of post" />
           <textarea value={description} onChange={(e) => setDescription(e.target.value)} className="textarea textarea-bordered w-full h-24" placeholder="What's on your mind?" />
           <input type="file" onChange={(e) => setImage(e.target.files[0])} className="file-input w-full" />
-          <button type="submit" className="btn btn-primary w-full">
-            {editPost ? "Update" : "Post"}
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 ml-2">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
-            </svg>
+          <button
+            type="submit"
+            className="group relative overflow-hidden px-6 py-3 rounded-lg bg-gradient-to-r from-green-500 to-emerald-600 text-white font-medium transition-all duration-300 hover:shadow-lg hover:shadow-green-500/30 active:scale-95 w-full max-w-xs"
+          >
+            {/* Background Animation Layer */}
+            <div className="absolute inset-0 w-full h-full transition-all duration-300">
+              <div className="absolute inset-0 transform translate-x-[-100%] bg-gradient-to-r from-lime-500 to-green-600 group-hover:translate-x-0 transition-transform duration-500 ease-out" />
+              <div className="absolute inset-0 transform translate-x-[-100%] bg-gradient-to-r from-teal-400/30 to-emerald-400/30 group-hover:translate-x-0 transition-transform duration-700 ease-out delay-75" />
+            </div>
+
+            {/* Content Layer */}
+            <div className="relative flex items-center justify-center gap-2 transform group-hover:scale-105 transition-transform duration-300">
+              <span className="transform transition-transform duration-300 group-hover:translate-x-1">{editPost ? "Update Post" : "Create Post"}</span>
+
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={2}
+                stroke="currentColor"
+                className="w-5 h-5 transform transition-all duration-300 group-hover:translate-x-2 group-hover:scale-110"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.125A59.769 59.769 0 0121.485 12 59.768 59.768 0 013.27 20.875L5.999 12Zm0 0h7.5" />
+              </svg>
+
+              {/* Shine Effect */}
+              <div className="absolute inset-0 w-full h-full">
+                <div className="absolute top-0 left-0 w-1/4 h-full bg-white/20 skew-x-[25deg] transform -translate-x-full group-hover:translate-x-[400%] transition-transform duration-1000 ease-out" />
+              </div>
+            </div>
+
+            {/* Subtle Border Animation */}
+            <div className="absolute inset-0 rounded-lg border-2 border-green-300/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </button>
         </form>
       </div>

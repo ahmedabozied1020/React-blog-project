@@ -1,10 +1,16 @@
 import React from "react";
 import NavBar from "./component/NavBar";
-import { BrowserRouter, Route, Routes, Navigate, Outlet } from "react-router-dom";
+import {
+  BrowserRouter,
+  Route,
+  Routes,
+  Navigate,
+  Outlet,
+} from "react-router-dom";
 import Home from "./pages/Home";
 import LogIn from "./pages/LogIn";
 import Register from "./pages/Register";
-import PostDetails from "./pages/postDetails";
+import PostDetails from "./pages/PostDetails";
 import Footer from "./component/footer";
 import { AuthProvider, useAuth } from "../Hooks/AuthContext";
 import Chat from "./pages/Chat";
