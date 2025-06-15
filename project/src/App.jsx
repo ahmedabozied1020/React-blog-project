@@ -11,7 +11,7 @@ import Home from "./pages/Home";
 import LogIn from "./pages/LogIn";
 import Register from "./pages/Register";
 import PostDetails from "./pages/PostDetails";
-import Footer from "./component/footer";
+import Footer from "./component/Footer";
 import { AuthProvider, useAuth } from "../Hooks/AuthContext";
 import Chat from "./pages/Chat";
 import UserProfile from "./pages/UserProfile";
