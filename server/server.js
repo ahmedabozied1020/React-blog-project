@@ -16,14 +16,15 @@ require("dotenv").config();
 
 const app = express();
 const server = http.createServer(app);
-const io = new socketServer(server, {
-  cors: {
-    origin: "http://localhost:5173",
-  },
-});
 
 const corsOptions = {
-  origin: "http://localhost:5173",
+  origin:
+    process.env.NODE_ENV === "production"
+      ? [
+          process.env.FRONTEND_URL,
+          "http://localhost:5173", 
+        ]
+      : "http://localhost:5173",
   methods: ["GET", "POST", "PATCH", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
@@ -73,12 +74,19 @@ io.use((socket, next) => {
     console.log("Decoded token in socket middleware:", decoded);
     socket.userId = decoded.userId;
     socket.userName = decoded.name;
-    console.log("Socket user info:", { userId: socket.userId, userName: socket.userName });
+    console.log("Socket user info:", {
+      userId: socket.userId,
+      userName: socket.userName,
+    });
     next();
   });
 });
 io.on("connection", (socket) => {
-  console.log(`User connected: ${socket.userName || "Unknown"} (ID: ${socket.userId || "undefined"})`);
+  console.log(
+    `User connected: ${socket.userName || "Unknown"} (ID: ${
+      socket.userId || "undefined"
+    })`
+  );
   if (socket.userId && socket.userName) {
     connectedUsers.set(socket.userId, socket);
     userNameToId.set(socket.userName, socket.userId);
@@ -89,7 +97,11 @@ io.on("connection", (socket) => {
     const receiverId = userNameToId.get(to.toLowerCase());
     const receiverSocket = connectedUsers.get(receiverId);
     if (receiverSocket) {
-      receiverSocket.emit("privateMessage", { content, from: socket.userId, fromName: socket.userName });
+      receiverSocket.emit("privateMessage", {
+        content,
+        from: socket.userId,
+        fromName: socket.userName,
+      });
       socket.emit("privateMessage", { content, to: receiverId, toName: to });
     } else {
       socket.emit("error", { message: "User not found" });
@@ -103,8 +115,10 @@ io.on("connection", (socket) => {
   });
 });
 
+const PORT = process.env.PORT || 3000;
+
 mongoose.connect(process.env.DB_URL).then(() => {
-  server.listen(3000, () => {
+  server.listen(PORT, () => {
     console.log("server is running on port 3000");
   });
 });
