@@ -24,7 +24,7 @@ const Register = () => {
         formData.append("avatar", avatarFile);
       }
       const response = await axios.post(
-        "https://react-blog-project-production-1749.up.railway.app/signup",
+        "http://localhost:3000/signup",
         formData,
         {
           headers: {

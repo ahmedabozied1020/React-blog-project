@@ -16,10 +16,7 @@ const LogIn = () => {
 
   const onSubmit = async (data) => {
     try {
-      const response = await axios.post(
-        "https://react-blog-project-production-1749.up.railway.app/login",
-        data
-      );
+      const response = await axios.post("http://localhost:3000/login", data);
       if (response.data.token) {
         login({
           token: response.data.token,
