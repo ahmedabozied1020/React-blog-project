@@ -11,7 +11,12 @@ const Home = () => {
   const fetchAllPosts = async () => {
     try {
       const response = await axios.get("http://localhost:3000/posts/all");
+      console.log("=== FRONTEND ===");
+      console.log("Response data:", response.data);
+      console.log("Number of posts:", response.data.length);
+      console.log("Posts state before:", posts);
       setPosts(response.data);
+      console.log("Posts state after:", response.data);
     } catch (error) {
       console.error("Error fetching all posts:", error);
     }
@@ -26,15 +31,27 @@ const Home = () => {
             Friends
           </span>
           <span className="text-xl flex px-3 py-2 gap-4 hover:bg-slate-300 rounded-2xl hover:cursor-pointer ">
-            <img src="watching_11919629.png" alt="watches" className="w-7 h-7" />
+            <img
+              src="watching_11919629.png"
+              alt="watches"
+              className="w-7 h-7"
+            />
             Watches
           </span>
           <span className="text-xl flex px-3 py-2 gap-4 hover:bg-slate-300 rounded-2xl hover:cursor-pointer ">
-            <img src="briefcase_7771335.png" alt="business" className="w-7 h-7" />
+            <img
+              src="briefcase_7771335.png"
+              alt="business"
+              className="w-7 h-7"
+            />
             Business
           </span>
           <span className="text-xl flex px-3 py-2 gap-4 hover:bg-slate-300 rounded-2xl hover:cursor-pointer ">
-            <img src="marketplace_13887514.png" alt="Marketplace" className="w-7 h-7" />
+            <img
+              src="marketplace_13887514.png"
+              alt="Marketplace"
+              className="w-7 h-7"
+            />
             MarketPlace
           </span>
           <span className="text-xl flex px-3 py-2 gap-4 hover:bg-slate-300 rounded-2xl hover:cursor-pointer ">
@@ -45,7 +62,10 @@ const Home = () => {
       </div>
       <div className="space-y-8 w-[45%]">
         {posts.map((post) => (
-          <div key={post._id} className="bg-white rounded-xl shadow-2xl overflow-hidden">
+          <div
+            key={post._id}
+            className="bg-white rounded-xl shadow-2xl overflow-hidden"
+          >
             <div className="p-6">
               <h2 className="text-2xl font-bold mb-3">{post.title}</h2>
               <p className="text-gray-600 mb-4">{post.description}</p>
