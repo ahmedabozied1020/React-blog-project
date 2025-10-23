@@ -17,11 +17,18 @@ exports.getPosts = async (req, res) => {
 
 exports.getAllPosts = async (req, res) => {
   try {
-    const posts = await Post.find(); 
-    res.send(posts);
+    const posts = await Post.find()
+      .populate("userId", "name avatar email")
+      .sort({ createdAt: -1 });
+
+    console.log("=== GET ALL POSTS ===");
+    console.log("Number of posts found:", posts.length);
+    console.log("Posts data:", JSON.stringify(posts, null, 2));
+
+    res.json(posts);
   } catch (error) {
     console.error("Error fetching all posts:", error);
-    res.status(500).send({ error: error.message });
+    res.status(500).json({ error: error.message });
   }
 };
 
@@ -51,14 +58,20 @@ exports.updatePost = async (req, res, next) => {
       updatedPost.image = req.file.path.replace(/\\/g, "/");
     }
 
-    const post = await Post.findOneAndUpdate({ _id: id, userId: req.user._id }, updatedPost, {
-      new: true,
-    });
+    const post = await Post.findOneAndUpdate(
+      { _id: id, userId: req.user._id },
+      updatedPost,
+      {
+        new: true,
+      }
+    );
 
     if (!post) {
       return res
         .status(404)
-        .send({ message: "Post not found or you're not authorized to update it" });
+        .send({
+          message: "Post not found or you're not authorized to update it",
+        });
     }
 
     res.send(post);

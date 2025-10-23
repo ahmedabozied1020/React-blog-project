@@ -13,53 +13,55 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 
-///image upload to Upload Image in request
+// Ensure uploads directory exists
+const uploadsDir = "./uploads/";
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+  console.log("✅ Created uploads directory");
+}
+
+// Image upload configuration
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "./uploads/"); // Folder where images will be stored
+    cb(null, "./uploads/");
   },
   filename: function (req, file, cb) {
-    cb(null, file.fieldname + "-" + Date.now() + path.extname(file.originalname)); // Rename the file with a timestamp
+    const uniqueName =
+      file.fieldname + "-" + Date.now() + path.extname(file.originalname);
+    cb(null, uniqueName);
   },
 });
+
 const filter = function (req, file, cb) {
   if (file.mimetype.startsWith("image")) {
-    //image/png image/jpg
     return cb(null, true);
   } else {
     cb(new Error("Only images are allowed!"), false);
   }
 };
 
-// Initialize upload variable with the Multer configuration
 const upload = multer({
   storage: storage,
   fileFilter: filter,
+  limits: {
+    fileSize: 5 * 1024 * 1024, // 5MB limit
+  },
 });
 
-// Route to handle image upload
-
-router.post(
-  "/",
-  auth,
-  upload.single("image"),
-  (req, res, next) => {
-    try {
-      req.user.img = req.file.path;
-      next();
-    } catch (error) {
-      res.status(400).send({ error: error.message });
-    }
-  },
-  createPost
-);
-
+// PUBLIC ROUTES
 router.get("/all", getAllPosts);
+
+// PROTECTED ROUTES
 router.get("/", auth, getPosts);
 router.get("/:id", auth, getPost);
 
+// CREATE POST - FIXED! Remove the problematic middleware
+router.post("/", auth, upload.single("image"), createPost);
+
+// UPDATE POST
 router.patch("/:id", auth, upload.single("image"), updatePost);
 
+// DELETE POST
 router.delete("/:id", auth, deletePost);
 
 module.exports = router;
